@@ -1,0 +1,14 @@
+{
+  "name": "hospital-dsl",
+  "version": "1.0.0",
+  "description": "Domain Specific Language for Healthcare Institutions",
+  "type": "module",
+  "main": "cli.js",
+  "scripts": {
+    "validate": "node cli.js validate",
+    "generate": "node cli.js generate"
+  },
+  "dependencies": {
+    "antlr4": "^4.13.1"
+  }
+}

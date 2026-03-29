@@ -1,0 +1,128 @@
+// Sunflower Clinic — HospitalDSL v2
+Hospital SunflowerClinic {
+
+  // ── Data Modules ─────────────────────────────────────────────
+
+  Module Doctor {
+    Label: "Doctors";
+    Icon: "👨‍⚕️";
+    Color: green;
+    Fields {
+      name:           String  required  label "Full Name";
+      specialization: String  required  label "Specialization";
+      department:     String  required  label "Department"  options "Cardiology","Pediatrics","Orthopedics","Neurology","General";
+      phone:          Phone   optional  label "Phone";
+      email:          Email   optional  label "Email";
+      available:      Boolean optional  label "Accepting Patients"  default "true";
+      workingDays:    String  optional  label "Working Days"  default "Mon-Fri";
+      startTime:      String  optional  label "Start Time"   default "09:00";
+      endTime:        String  optional  label "End Time"     default "17:00";
+    }
+  }
+
+  Module Patient {
+    Label: "Patients";
+    Icon: "🧑‍⚕️";
+    Color: blue;
+    Fields {
+      name:        String  required  label "Full Name";
+      age:         Number  required  label "Age"  min 0  max 150;
+      gender:      String  optional  label "Gender"  options "Male","Female","Other";
+      bloodType:   String  optional  label "Blood Type"  options "A+","A-","B+","B-","O+","O-","AB+","AB-";
+      phone:       Phone   optional  label "Phone";
+      email:       Email   optional  label "Email";
+      address:     Text    optional  label "Address";
+      allergies:   Text    optional  label "Known Allergies";
+      conditions:  Text    optional  label "Existing Conditions";
+    }
+  }
+
+  Module Appointment {
+    Label: "Appointments";
+    Icon: "📅";
+    Color: purple;
+    Fields {
+      patientName:  String  required  label "Patient Name";
+      patientId:    String  required  label "Patient ID";
+      doctorName:   String  required  label "Doctor Name";
+      doctorId:     String  required  label "Doctor ID";
+      department:   String  required  label "Department";
+      date:         Date    required  label "Date";
+      timeSlot:     String  required  label "Time Slot";
+      status:       String  optional  label "Status"  default "Pending"  options "Pending","Approved","Rejected","Completed","Cancelled";
+      reason:       Text    optional  label "Reason for Visit";
+      notes:        Text    optional  label "Doctor Notes";
+    }
+  }
+
+  Module Prescription {
+    Label: "Prescriptions";
+    Icon: "💊";
+    Color: orange;
+    Fields {
+      patientName:  String  required  label "Patient Name";
+      patientId:    String  required  label "Patient ID";
+      doctorName:   String  required  label "Doctor Name";
+      doctorId:     String  required  label "Doctor ID";
+      date:         Date    required  label "Date";
+      diagnosis:    Text    required  label "Diagnosis";
+      medications:  Text    required  label "Medications";
+      dosage:       Text    optional  label "Dosage Instructions";
+      followUp:     Date    optional  label "Follow-up Date";
+      notes:        Text    optional  label "Additional Notes";
+    }
+  }
+
+  Module LabReport {
+    Label: "Lab Reports";
+    Icon: "🧪";
+    Color: red;
+    Fields {
+      patientName:  String  required  label "Patient Name";
+      patientId:    String  required  label "Patient ID";
+      doctorName:   String  required  label "Doctor Name";
+      doctorId:     String  required  label "Doctor ID";
+      testName:     String  required  label "Test Name";
+      testDate:     Date    required  label "Test Date";
+      result:       Text    required  label "Test Result";
+      normalRange:  String  optional  label "Normal Range";
+      status:       String  optional  label "Status"  default "Pending"  options "Pending","Ready","Reviewed";
+      notes:        Text    optional  label "Notes";
+    }
+  }
+
+  Module Department {
+    Label: "Departments";
+    Icon: "🏢";
+    Color: teal;
+    Fields {
+      name:        String  required  label "Department Name";
+      head:        String  optional  label "Head of Department";
+      description: Text    optional  label "Description";
+    }
+  }
+
+  // ── Role Definitions ─────────────────────────────────────────
+
+  Role Patient {
+    Portal: BookAppointment, MyAppointments, MyPrescriptions, MyLabReports, MyProfile;
+  }
+
+  Role Doctor {
+    Portal: MySchedule, PatientHistory, WritePrescription, UploadLabReport, SetAvailability;
+  }
+
+  Role Admin {
+    Dashboard: Stats;
+    Manage: Doctor, Patient, Department;
+  }
+
+  // ── Auth ─────────────────────────────────────────────────────
+
+  Auth {
+    Type: JWT;
+    Expiry: "7d";
+    Roles: Admin, Doctor, Patient;
+  }
+
+}
