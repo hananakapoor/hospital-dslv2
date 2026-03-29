@@ -1,15 +1,15 @@
-->Install Project Dependencies
+# Install Project Dependencies
 Open PowerShell, navigate to the project root folder and run:
 cd C:\Projects\hospital-dsl
 npm install
 
--> Download ANTLR (One-time setup)
+# Download ANTLR (One-time setup)
 Create a folder for ANTLR and download the JAR file:
 mkdir C:\antlr
 cd C:\antlr
 # Download antlr-4.13.1-complete.jar from:
-# https://www.antlr.org/download/antlr-4.13.1-complete.jar
-# Place it in C:\antlr\
+  https://www.antlr.org/download/antlr-4.13.1-complete.jar
+  Place it in C:\antlr\
 
 Then add the ANTLR command to PowerShell. Open your profile:
 notepad $PROFILE
@@ -20,16 +20,16 @@ function antlr4 { java -jar "C:\antlr\antlr-4.13.1-complete.jar" $args }
 # Reload profile:
 . $PROFILE
 
-—> Regenerate the ANTLR Parser
+# Regenerate the ANTLR Parser
 Navigate to the grammar folder and regenerate the parser files:
 cd src\grammar
 java -jar C:\antlr\antlr-4.13.1-complete.jar -Dlanguage=JavaScript -visitor -o ..\parser HospitalDSL.g4
 cd ..\..
-->  In root folder run the following commands to validate the code and generate the app
-    node cli.js validate examples/sunflower-clinic.hospital  
-    node cli.js generate examples/sunflower-clinic.hospital
+#  In root folder run the following commands to validate the code and generate the app
+#  node cli.js validate examples/sunflower-clinic.hospital  
+#  node cli.js generate examples/sunflower-clinic.hospital
 
-->  Database Setup (MongoDB Atlas)
+#  Database Setup (MongoDB Atlas)
 This project uses MongoDB Atlas (free cloud database). Follow these steps:
 
 1.	Go to https://www.mongodb.com/cloud/atlas/register and create a free account
@@ -45,7 +45,7 @@ Open the file generated\.env and update it with your connection string:
 MONGO_URI=mongodb+srv://USERNAME:PASSWORD@cluster0.xxxxx.mongodb.net/hospitaldsl
 PORT=5000
 
-->  Running the Project
+#  Running the Project
 
 The generated app is already inside the generated\ folder. Just install and run:
 
